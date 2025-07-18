@@ -20,6 +20,10 @@ class PlaybackController: ObservableObject {
     private var totalDuration: TimeInterval = 0
     private var playbackSpeed: Double = 1.0
     
+    // Add synchronization and content height tracking
+    private let playbackQueue = DispatchQueue(label: "com.smarteller.playback", qos: .userInitiated)
+    private var contentHeight: CGFloat = 1000 // Should be calculated from actual content
+    
     func setupText(_ content: String, duration: TimeInterval, speed: Double = 1.0) {
         self.textContent = content
         self.totalDuration = duration
@@ -57,12 +61,17 @@ class PlaybackController: ObservableObject {
     
     func seekTo(progress: Double) {
         let clampedProgress = max(0, min(1, progress))
-        playbackProgress = clampedProgress
-        currentTime = totalDuration * clampedProgress
-        currentPosition = clampedProgress
         
-        // 计算滚动偏移量（这里需要根据实际文本高度调整）
-        scrollOffset = CGFloat(clampedProgress) * 1000 // 假设的最大滚动距离
+        playbackQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.playbackProgress = clampedProgress
+                self.currentTime = self.totalDuration * clampedProgress
+                self.currentPosition = clampedProgress
+                self.scrollOffset = CGFloat(clampedProgress) * self.contentHeight
+            }
+        }
     }
     
     func updateSpeed(_ speed: Double) {
@@ -75,8 +84,15 @@ class PlaybackController: ObservableObject {
     }
     
     private func startTimer() {
+        stopTimer() // Ensure no existing timer
+        
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             self?.updatePlayback()
+        }
+        
+        // Ensure timer runs on main runloop
+        if let timer = timer {
+            RunLoop.main.add(timer, forMode: .common)
         }
     }
     
@@ -86,23 +102,37 @@ class PlaybackController: ObservableObject {
     }
     
     private func updatePlayback() {
-        guard totalDuration > 0 else { return }
-        
-        let increment = 0.1 * playbackSpeed / totalDuration
-        playbackProgress = min(1.0, playbackProgress + increment)
-        currentTime = totalDuration * playbackProgress
-        currentPosition = playbackProgress
-        
-        // 更新滚动偏移量
-        scrollOffset = CGFloat(playbackProgress) * 1000
-        
-        // 如果播放完成，停止播放
-        if playbackProgress >= 1.0 {
-            pause()
+        playbackQueue.async { [weak self] in
+            guard let self = self,
+                  self.totalDuration > 0 else { return }
+            
+            let increment = 0.1 * self.playbackSpeed / self.totalDuration
+            let newProgress = min(1.0, self.playbackProgress + increment)
+            let newTime = self.totalDuration * newProgress
+            let newOffset = newProgress * self.contentHeight
+            
+            DispatchQueue.main.async {
+                self.playbackProgress = newProgress
+                self.currentTime = newTime
+                self.currentPosition = newProgress
+                self.scrollOffset = newOffset
+                
+                // Check completion on main thread
+                if self.playbackProgress >= 1.0 {
+                    self.pause()
+                }
+            }
         }
     }
     
     deinit {
-        stopTimer()
+        playbackQueue.async { [weak timer] in
+            timer?.invalidate()
+        }
+    }
+    
+    // Method to set actual content height
+    func setContentHeight(_ height: CGFloat) {
+        contentHeight = max(height, 1000) // Minimum height to prevent division by zero
     }
 }

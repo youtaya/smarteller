@@ -13,10 +13,15 @@ class DocumentImporter: ObservableObject {
     
     static let shared = DocumentImporter()
     
+    // Security constants
+    private let maxFileSize: Int = 50 * 1024 * 1024 // 50MB limit
+    private let maxPDFPages: Int = 1000 // Limit PDF pages processed
+    
     private init() {}
     
     func importDocument(from url: URL) -> String? {
         guard url.startAccessingSecurityScopedResource() else {
+            print("Security: Failed to access security-scoped resource")
             return nil
         }
         
@@ -24,68 +29,136 @@ class DocumentImporter: ObservableObject {
             url.stopAccessingSecurityScopedResource()
         }
         
-        let fileExtension = url.pathExtension.lowercased()
+        // Validate file size first
+        guard let fileSize = getFileSize(url: url),
+              fileSize <= maxFileSize else {
+            print("Security: File too large (\(getFileSize(url: url) ?? 0) bytes)")
+            return nil
+        }
         
-        switch fileExtension {
-        case "txt":
+        // Validate file type by content, not just extension
+        guard let fileType = validateFileType(url: url) else {
+            print("Security: Invalid or unsupported file type")
+            return nil
+        }
+        
+        switch fileType {
+        case .plainText:
             return importTextFile(from: url)
-        case "pdf":
+        case .pdf:
             return importPDFFile(from: url)
-        case "docx":
+        case .docx:
             return importDocxFile(from: url)
         default:
+            print("Security: Unsupported file type")
             return nil
         }
     }
     
-    private func importTextFile(from url: URL) -> String? {
+    // Secure file size validation
+    private func getFileSize(url: URL) -> Int? {
         do {
-            let content = try String(contentsOf: url, encoding: .utf8)
-            return content
+            let attributes = try FileManager.default.attributesOfItem(atPath: url.path)
+            return attributes[.size] as? Int
         } catch {
-            print("Error reading text file: \(error)")
+            print("Error getting file size: \(error)")
             return nil
         }
     }
     
+    // Validate file type by magic numbers/content
+    private func validateFileType(url: URL) -> UTType? {
+        do {
+            let data = try Data(contentsOf: url, options: .mappedRead)
+            guard data.count >= 4 else { return nil }
+            
+            // Check magic numbers for file type validation
+            if isPDF(data: data) {
+                return .pdf
+            } else if isDocx(data: data) {
+                return UTType(filenameExtension: "docx")
+            } else if isPlainText(data: data) {
+                return .plainText
+            }
+            
+            return nil
+        } catch {
+            print("Error validating file type: \(error)")
+            return nil
+        }
+    }
+    
+    private func isPDF(data: Data) -> Bool {
+        let pdfMagic = Data([0x25, 0x50, 0x44, 0x46]) // "%PDF"
+        return data.prefix(4) == pdfMagic
+    }
+    
+    private func isDocx(data: Data) -> Bool {
+        let zipMagic = Data([0x50, 0x4B, 0x03, 0x04]) // ZIP file magic
+        return data.prefix(4) == zipMagic
+    }
+    
+    private func isPlainText(data: Data) -> Bool {
+        // Check if data is valid UTF-8 and doesn't contain null bytes
+        guard String(data: data, encoding: .utf8) != nil else { return false }
+        return !data.contains(0x00) // No null bytes
+    }
+    
+    // Secure text file import with encoding detection
+    private func importTextFile(from url: URL) -> String? {
+        // Try multiple encodings
+        if let content = try? String(contentsOf: url, encoding: .utf8) {
+            return sanitizeText(content)
+        } else if let content = try? String(contentsOf: url, encoding: .utf16) {
+            return sanitizeText(content)
+        } else {
+            print("Error: Could not decode text file with supported encodings")
+            return nil
+        }
+    }
+    
+    // Secure PDF import with pagination
     private func importPDFFile(from url: URL) -> String? {
         guard let pdfDocument = PDFDocument(url: url) else {
+            print("Error: Could not create PDF document")
             return nil
         }
         
+        let pageCount = min(pdfDocument.pageCount, maxPDFPages)
         var extractedText = ""
         
-        for pageIndex in 0..<pdfDocument.pageCount {
-            if let page = pdfDocument.page(at: pageIndex),
-               let pageText = page.string {
-                extractedText += pageText + "\n"
+        for pageIndex in 0..<pageCount {
+            autoreleasepool {
+                if let page = pdfDocument.page(at: pageIndex),
+                   let pageText = page.string {
+                    extractedText += sanitizeText(pageText) + "\n"
+                }
             }
         }
         
         return extractedText.isEmpty ? nil : extractedText
     }
     
+    // Proper DOCX implementation (simplified - in production use a proper library)
     private func importDocxFile(from url: URL) -> String? {
-        // 对于.docx文件，我们需要使用更复杂的解析
-        // 这里提供一个基础实现，实际项目中可能需要第三方库
-        do {
-            let data = try Data(contentsOf: url)
-            // 简单的文本提取（实际应用中需要更复杂的XML解析）
-            if let content = String(data: data, encoding: .utf8) {
-                // 这是一个简化的实现，实际需要解析XML结构
-                return content
-            }
-        } catch {
-            print("Error reading docx file: \(error)")
-        }
-        
+        print("Warning: DOCX import not properly implemented. Use a proper DOCX parsing library.")
+        // For now, return nil to prevent security issues
+        // In production, use libraries like 'ZIPFoundation' + XML parsing
         return nil
     }
     
-    // 支持的文件类型
+    // Sanitize extracted text
+    private func sanitizeText(_ text: String) -> String {
+        // Remove potentially dangerous characters and normalize
+        return text
+            .replacingOccurrences(of: "\0", with: "") // Remove null bytes
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    // Updated supported types - remove docx until properly implemented
     static let supportedTypes: [UTType] = [
         .plainText,
-        .pdf,
-        UTType(filenameExtension: "docx") ?? .data
+        .pdf
+        // Temporarily removed: UTType(filenameExtension: "docx") ?? .data
     ]
 }
