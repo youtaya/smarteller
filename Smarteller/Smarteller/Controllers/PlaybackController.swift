@@ -14,6 +14,7 @@ class PlaybackController: ObservableObject {
     @Published var playbackProgress: Double = 0.0
     @Published var currentTime: TimeInterval = 0
     @Published var scrollOffset: CGFloat = 0
+    @Published var speed: Double = 100.0  // Add public speed property (in percentage)
     
     private var timer: Timer?
     private var textContent: String = ""
@@ -27,7 +28,11 @@ class PlaybackController: ObservableObject {
     func setupText(_ content: String, duration: TimeInterval, speed: Double = 1.0) {
         self.textContent = content
         self.totalDuration = duration
-        self.playbackSpeed = speed
+        self.playbackSpeed = self.speed / 100.0  // Use the current speed setting
+        resetPlayback()
+    }
+    
+    func stop() {
         resetPlayback()
     }
     
@@ -75,7 +80,8 @@ class PlaybackController: ObservableObject {
     }
     
     func updateSpeed(_ speed: Double) {
-        self.playbackSpeed = speed
+        self.playbackSpeed = speed / 100.0  // Convert percentage to decimal
+        self.speed = speed  // Update the published property
         if isPlaying {
             // 重新启动定时器以应用新速度
             stopTimer()
