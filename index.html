@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能提词器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="teleprompter-container">
+        <!-- 左侧控制面板 -->
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>智能提词器</h1>
+                <button class="fullscreen-btn" id="fullscreenBtn">⛶</button>
+            </div>
+
+            <!-- 文本导入 -->
+            <div class="section">
+                <h3>文本导入</h3>
+                <button class="btn-primary" id="importBtn">📤 导入文本文件</button>
+                <input type="file" id="fileInput" accept=".txt,.docx,.pdf" style="display: none;">
+                <button class="btn-secondary" id="newTextBtn">📄 新建文本</button>
+            </div>
+
+            <!-- 播放控制 -->
+            <div class="section">
+                <h3>播放控制</h3>
+                <div class="play-controls">
+                    <button class="play-btn" id="playBtn">▶ 播放</button>
+                    <button class="stop-btn" id="stopBtn">⏹</button>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:01</span>
+                    <span id="totalTime">0:03</span>
+                </div>
+                <div class="progress-container">
+                    <input type="range" id="progressSlider" min="0" max="100" value="0" class="progress-slider">
+                </div>
+            </div>
+
+            <!-- 智能跟读 -->
+            <div class="section">
+                <h3>智能跟读</h3>
+                <button class="btn-secondary" id="speechBtn">🎤 开启语音跟读</button>
+            </div>
+
+            <!-- 显示设置 -->
+            <div class="section">
+                <h3>显示设置</h3>
+                
+                <div class="setting-item">
+                    <label>字体大小</label>
+                    <div class="slider-container">
+                        <button class="slider-btn" id="fontSizeDown">−</button>
+                        <span id="fontSizeValue">24</span>
+                        <button class="slider-btn" id="fontSizeUp">+</button>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <label>透明度</label>
+                    <input type="range" id="opacitySlider" min="10" max="100" value="100" class="setting-slider">
+                </div>
+
+                <div class="setting-item">
+                    <label>文字颜色</label>
+                    <input type="color" id="textColorPicker" value="#ffffff" class="color-picker">
+                </div>
+
+                <div class="setting-item">
+                    <label>背景颜色</label>
+                    <input type="color" id="bgColorPicker" value="#000000" class="color-picker">
+                </div>
+
+                <button class="btn-secondary" id="mirrorBtn">🔄 镜像显示</button>
+                <button class="btn-secondary" id="invisibleBtn">👁 隐身模式</button>
+                <button class="btn-secondary" id="resetBtn">↺ 重置位置</button>
+            </div>
+        </div>
+
+        <!-- 右侧文本显示区域 -->
+        <div class="text-display" id="textDisplay">
+            <div class="welcome-content">
+                <h2>欢迎使用智能提词器！</h2>
+                <p>这是一段示例文本，专门用来测试智能提词器的各项功能。</p>
+                <p>首先，我们来测试基本的文字显示功能。这款应用支持多种字体大小，从12点到72点不等。您可以根据阅读距离和个人偏好来调整字体大小。</p>
+                <p>接下来，我们测试自动滚动功能。应用会以您设定的速度自动滚动文本，就像传统的提词器一样。您可以随时暂停和继续滚动。</p>
+                <div class="reading-line" id="readingLine"></div>
+                <p>现在让我们来测试语音识别功能。当您开启语音识别后，请清晰地朗读这段文字。应用会智能地识别您的语音，并自动跟踪阅读进度。</p>
+                <p>这里有一些技术术语来测试识别准确性：Swift编程语言、macOS系统、NSApplication、语音识别框架、人工智能、机器学习。</p>
+                <p>最后，让我们测试一下标点符号的处理：这是一个问题吗？是的！这确实是一个很好的测试。我们还有一些数字：2024年、第1次、100%准确率。</p>
+                <p>感谢您使用智能提词器，祝您创作愉快！</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新建文本弹窗 -->
+    <div class="modal" id="textModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新建文本</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <textarea id="textInput" placeholder="请输入您的文本内容..."></textarea>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelBtn">取消</button>
+                <button class="btn-primary" id="confirmBtn">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
