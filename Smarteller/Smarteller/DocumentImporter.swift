@@ -47,7 +47,7 @@ class DocumentImporter: ObservableObject {
             return importTextFile(from: url)
         case .pdf:
             return importPDFFile(from: url)
-        case .docx:
+        case UTType("org.openxmlformats.wordprocessingml.document")!:
             return importDocxFile(from: url)
         default:
             print("Security: Unsupported file type")
@@ -76,7 +76,7 @@ class DocumentImporter: ObservableObject {
             if isPDF(data: data) {
                 return .pdf
             } else if isDocx(data: data) {
-                return UTType(filenameExtension: "docx")
+                return UTType("org.openxmlformats.wordprocessingml.document")!
             } else if isPlainText(data: data) {
                 return .plainText
             }
