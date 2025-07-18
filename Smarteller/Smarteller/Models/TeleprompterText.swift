@@ -3,6 +3,10 @@
 //  Smarteller
 //
 //  Created by 金小平 on 2025/7/18.
+//  Copyright © 2024 Smarteller. All rights reserved.
+//
+//  数据模型：提词器文本实体
+//  功能：管理文本内容、标题、创建时间等信息
 //
 
 import Foundation

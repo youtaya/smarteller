@@ -1,0 +1,230 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+
+jobs:
+  lint:
+    name: SwiftLint
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Install SwiftLint
+      run: |
+        brew install swiftlint
+        
+    - name: Run SwiftLint
+      run: |
+        swiftlint --strict
+
+  test:
+    name: Build and Test
+    runs-on: macos-latest
+    needs: lint
+    
+    strategy:
+      matrix:
+        xcode: ['15.0']
+        ios: ['17.0']
+        macos: ['14.0']
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_${{ matrix.xcode }}.app
+      
+    - name: Show Xcode version
+      run: xcodebuild -version
+      
+    - name: Show available schemes
+      run: |
+        cd Smarteller
+        xcodebuild -list -project Smarteller.xcodeproj
+        
+    - name: Clean Build Folder
+      run: |
+        cd Smarteller
+        xcodebuild clean -project Smarteller.xcodeproj -scheme Smarteller
+        
+    - name: Build for Testing
+      run: |
+        cd Smarteller
+        xcodebuild build-for-testing \
+          -project Smarteller.xcodeproj \
+          -scheme Smarteller \
+          -destination 'platform=macOS,arch=x86_64' \
+          -configuration Debug
+          
+    - name: Run Unit Tests
+      run: |
+        cd Smarteller
+        xcodebuild test-without-building \
+          -project Smarteller.xcodeproj \
+          -scheme Smarteller \
+          -destination 'platform=macOS,arch=x86_64' \
+          -configuration Debug \
+          -resultBundlePath TestResults.xcresult
+          
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-results-${{ matrix.xcode }}
+        path: Smarteller/TestResults.xcresult
+        
+    - name: Generate Code Coverage Report
+      run: |
+        cd Smarteller
+        xcrun xccov view --report --json TestResults.xcresult > coverage.json
+        xcrun xccov view --report TestResults.xcresult
+        
+    - name: Upload Coverage Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report-${{ matrix.xcode }}
+        path: Smarteller/coverage.json
+
+  build-release:
+    name: Build Release
+    runs-on: macos-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode.app
+      
+    - name: Build Release
+      run: |
+        cd Smarteller
+        xcodebuild archive \
+          -project Smarteller.xcodeproj \
+          -scheme Smarteller \
+          -destination 'platform=macOS,arch=x86_64' \
+          -configuration Release \
+          -archivePath build/Smarteller.xcarchive
+          
+    - name: Export Archive
+      run: |
+        cd Smarteller
+        # 创建导出选项文件
+        cat > ExportOptions.plist << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>method</key>
+            <string>mac-application</string>
+            <key>destination</key>
+            <string>export</string>
+        </dict>
+        </plist>
+        EOF
+        
+        xcodebuild -exportArchive \
+          -archivePath build/Smarteller.xcarchive \
+          -exportPath build/ \
+          -exportOptionsPlist ExportOptions.plist
+          
+    - name: Upload Release Build
+      uses: actions/upload-artifact@v3
+      with:
+        name: smarteller-release
+        path: Smarteller/build/Smarteller.app
+        
+  security-scan:
+    name: Security Scan
+    runs-on: macos-latest
+    needs: lint
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Run Security Scan
+      run: |
+        # 检查敏感信息泄露
+        echo "Scanning for sensitive information..."
+        
+        # 检查硬编码的密钥或密码
+        if grep -r -i "password\|secret\|key\|token" --include="*.swift" Smarteller/Smarteller/ | grep -v "//"; then
+          echo "⚠️ Warning: Potential sensitive information found"
+          grep -r -i "password\|secret\|key\|token" --include="*.swift" Smarteller/Smarteller/ | grep -v "//"
+        else
+          echo "✅ No obvious sensitive information found"
+        fi
+        
+        # 检查调试代码
+        if grep -r "print(" --include="*.swift" Smarteller/Smarteller/; then
+          echo "⚠️ Warning: Debug print statements found"
+        else
+          echo "✅ No debug print statements found"
+        fi
+
+  documentation:
+    name: Generate Documentation
+    runs-on: macos-latest
+    needs: test
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Install Swift-DocC
+      run: |
+        # Swift-DocC 通常随 Xcode 一起安装
+        echo "Using built-in Swift-DocC"
+        
+    - name: Generate Documentation
+      run: |
+        cd Smarteller
+        # 为项目生成文档
+        xcodebuild docbuild \
+          -project Smarteller.xcodeproj \
+          -scheme Smarteller \
+          -destination 'platform=macOS,arch=x86_64'
+          
+    - name: Upload Documentation
+      uses: actions/upload-artifact@v3
+      with:
+        name: documentation
+        path: Smarteller/build/Build/Products/Debug/Smarteller.doccarchive
+
+  notify:
+    name: Notify Results
+    runs-on: macos-latest
+    needs: [lint, test, build-release, security-scan, documentation]
+    if: always()
+    
+    steps:
+    - name: Notify Success
+      if: ${{ needs.lint.result == 'success' && needs.test.result == 'success' }}
+      run: |
+        echo "🎉 All checks passed successfully!"
+        echo "✅ Linting: ${{ needs.lint.result }}"
+        echo "✅ Testing: ${{ needs.test.result }}"
+        echo "✅ Security: ${{ needs.security-scan.result }}"
+        echo "✅ Documentation: ${{ needs.documentation.result }}"
+        
+    - name: Notify Failure
+      if: ${{ needs.lint.result == 'failure' || needs.test.result == 'failure' }}
+      run: |
+        echo "❌ Some checks failed!"
+        echo "Linting: ${{ needs.lint.result }}"
+        echo "Testing: ${{ needs.test.result }}"
+        echo "Security: ${{ needs.security-scan.result }}"
+        echo "Documentation: ${{ needs.documentation.result }}"
+        exit 1

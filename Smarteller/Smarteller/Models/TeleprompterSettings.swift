@@ -3,6 +3,10 @@
 //  Smarteller
 //
 //  Created by 金小平 on 2025/7/18.
+//  Copyright © 2024 Smarteller. All rights reserved.
+//
+//  设置管理：应用程序配置和用户偏好设置
+//  功能：管理字体、颜色、播放控制等各项设置
 //
 
 import SwiftUI
