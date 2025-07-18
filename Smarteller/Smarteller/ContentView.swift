@@ -27,23 +27,29 @@ struct ContentView: View {
         HSplitView {
             // 左侧控制面板
             VStack(spacing: 0) {
-                controlPanelHeader
+                enhancedControlPanelHeader
+                
+                Divider()
                 
                 ScrollView {
-                    VStack(spacing: 16) {
-                        textManagementSection
-                        playbackControlSection
-                        displaySettingsSection
-                        advancedFeaturesSection
+                    LazyVStack(spacing: DesignSystem.Spacing.lg) {
+                        textManagementCard
+                        modernPlaybackControlCard
+                        displaySettingsCard
+                        advancedFeaturesCard
                     }
-                    .padding(16)
+                    .padding(DesignSystem.Spacing.md)
                 }
             }
-            .frame(width: 280)
-            .background(Color(NSColor.controlBackgroundColor))
+            .frame(width: 320)
+            .background(DesignSystem.Colors.backgroundSecondary)
             
             // 右侧文本显示区域
-            textDisplayArea
+            EnhancedTextDisplay(
+                settings: settings,
+                playbackController: playbackController,
+                text: currentText
+            )
         }
         .fileImporter(
             isPresented: $showingFileImporter,
@@ -57,87 +63,124 @@ struct ContentView: View {
         }
     }
     
-    // MARK: - 控制面板头部
-    private var controlPanelHeader: some View {
-        VStack(spacing: 8) {
-            Text("智能提词器")
-                .font(.headline)
-                .foregroundColor(.primary)
+    // MARK: - 增强的控制面板头部
+    private var enhancedControlPanelHeader: some View {
+        VStack(spacing: DesignSystem.Spacing.sm) {
+            HStack {
+                Image(systemName: "tv")
+                    .foregroundColor(DesignSystem.Colors.primaryBlue)
+                    .font(.system(size: DesignSystem.Icons.largeIcon, weight: .semibold))
+                
+                Text("智能提词器")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+            }
             
             if let currentText = currentText {
-                Text(currentText.title)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
+                HStack {
+                    Image(systemName: "doc.text")
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                        .font(.system(size: DesignSystem.Icons.smallIcon))
+                    
+                    Text(currentText.title)
+                        .font(.caption)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                        .lineLimit(1)
+                    
+                    Spacer()
+                }
             }
         }
-        .padding()
-        .background(Color(NSColor.windowBackgroundColor))
+        .padding(DesignSystem.Spacing.lg)
+        .background(DesignSystem.Colors.backgroundPrimary)
     }
     
-    // MARK: - 文本管理区域
-    private var textManagementSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("文本导入")
-                .font(.subheadline)
-                .fontWeight(.medium)
-            
-            VStack(spacing: 8) {
+    // MARK: - 文本管理卡片
+    private var textManagementCard: some View {
+        SettingsCard(title: "文本管理", icon: "folder") {
+            VStack(spacing: DesignSystem.Spacing.sm) {
                 Button(action: { showingFileImporter = true }) {
                     HStack {
                         Image(systemName: "doc.badge.plus")
+                            .font(.system(size: DesignSystem.Icons.buttonIcon, weight: .medium))
                         Text("导入文本文件")
+                            .fontWeight(.medium)
                     }
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, DesignSystem.Spacing.sm)
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(DesignSystem.Colors.primaryBlue)
                 
                 Button(action: { showingNewTextSheet = true }) {
                     HStack {
                         Image(systemName: "doc.text")
+                            .font(.system(size: DesignSystem.Icons.buttonIcon, weight: .medium))
                         Text("新建文本")
+                            .fontWeight(.medium)
                     }
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, DesignSystem.Spacing.sm)
                 }
                 .buttonStyle(.bordered)
             }
         }
     }
     
-    // MARK: - 播放控制区域
-    private var playbackControlSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("播放控制")
-                .font(.subheadline)
-                .fontWeight(.medium)
-            
-            HStack {
-                Button(action: {
-                    playbackController.togglePlayback()
-                }) {
-                    Image(systemName: playbackController.isPlaying ? "pause.fill" : "play.fill")
-                        .foregroundColor(.white)
+    // MARK: - 现代化播放控制卡片
+    private var modernPlaybackControlCard: some View {
+        SettingsCard(title: "播放控制", icon: "play.circle") {
+            VStack(spacing: DesignSystem.Spacing.md) {
+                // 主要控制按钮
+                HStack(spacing: DesignSystem.Spacing.md) {
+                    PlaybackButton(
+                        icon: playbackController.isPlaying ? "pause.fill" : "play.fill",
+                        color: playbackController.isPlaying ? DesignSystem.Colors.pauseOrange : DesignSystem.Colors.playGreen,
+                        size: .large
+                    ) {
+                        playbackController.togglePlayback()
+                    }
+                    
+                    PlaybackButton(
+                        icon: "stop.fill",
+                        color: DesignSystem.Colors.stopRed,
+                        size: .medium
+                    ) {
+                        playbackController.resetPlayback()
+                    }
+                    
+                    Spacer()
+                    
+                    // 速度显示
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("速度")
+                            .font(.caption2)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                        Text("1.0x")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                    }
                 }
-                .frame(width: 44, height: 44)
-                .background(playbackController.isPlaying ? Color.orange : Color.green)
-                .clipShape(Circle())
                 
-                Button(action: {
-                    playbackController.resetPlayback()
-                }) {
-                    Image(systemName: "stop.fill")
-                        .foregroundColor(.white)
-                }
-                .frame(width: 44, height: 44)
-                .background(Color.red)
-                .clipShape(Circle())
+                // 进度条和时间
+                progressSection
             }
-            
+        }
+    }
+    
+    // MARK: - 进度区域
+    private var progressSection: some View {
+        VStack(spacing: DesignSystem.Spacing.sm) {
             // 时间显示
             HStack {
                 Text(settings.formatTime(playbackController.currentTime))
                     .font(.caption)
                     .monospacedDigit()
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
                 
                 Spacer()
                 
@@ -145,6 +188,7 @@ struct ContentView: View {
                     Text(settings.formatTime(currentText.estimatedDuration))
                         .font(.caption)
                         .monospacedDigit()
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
                 }
             }
             
@@ -153,117 +197,169 @@ struct ContentView: View {
                 get: { playbackController.playbackProgress },
                 set: { playbackController.seekTo(progress: $0) }
             ), in: 0...1)
-            .accentColor(.blue)
+            .tint(DesignSystem.Colors.primaryBlue)
         }
     }
     
-    // MARK: - 显示设置区域
-    private var displaySettingsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("显示设置")
-                .font(.subheadline)
-                .fontWeight(.medium)
-            
-            VStack(spacing: 12) {
+    // MARK: - 显示设置卡片
+    private var displaySettingsCard: some View {
+        SettingsCard(title: "显示设置", icon: "textformat") {
+            VStack(spacing: DesignSystem.Spacing.md) {
                 // 字体大小
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                     HStack {
                         Text("字体大小")
+                            .font(.caption)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
                         Spacer()
                         Text("\(Int(settings.fontSize))")
-                            .foregroundColor(.secondary)
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
                     }
-                    .font(.caption)
                     
-                    HStack {
+                    HStack(spacing: DesignSystem.Spacing.sm) {
                         Button("-") {
                             settings.fontSize = max(settings.minFontSize, settings.fontSize - 1)
                         }
-                        .frame(width: 24, height: 24)
+                        .frame(width: 28, height: 28)
+                        .background(DesignSystem.Colors.backgroundTertiary)
+                        .cornerRadius(DesignSystem.CornerRadius.small)
                         
                         Slider(value: $settings.fontSize, in: settings.minFontSize...settings.maxFontSize, step: 1)
+                            .tint(DesignSystem.Colors.primaryBlue)
                         
                         Button("+") {
                             settings.fontSize = min(settings.maxFontSize, settings.fontSize + 1)
                         }
-                        .frame(width: 24, height: 24)
+                        .frame(width: 28, height: 28)
+                        .background(DesignSystem.Colors.backgroundTertiary)
+                        .cornerRadius(DesignSystem.CornerRadius.small)
                     }
                 }
                 
                 // 透明度
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                     HStack {
                         Text("透明度")
+                            .font(.caption)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
                         Spacer()
                         Text(String(format: "%.1f", settings.transparency))
-                            .foregroundColor(.secondary)
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
                     }
-                    .font(.caption)
                     
                     Slider(value: $settings.transparency, in: settings.minTransparency...settings.maxTransparency)
+                        .tint(DesignSystem.Colors.primaryBlue)
                 }
                 
                 // 颜色设置
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: DesignSystem.Spacing.md) {
+                    VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                         Text("文字颜色")
                             .font(.caption)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
                         ColorPicker("", selection: $settings.textColor)
                             .labelsHidden()
-                            .frame(width: 40, height: 30)
+                            .frame(width: 44, height: 32)
+                            .background(DesignSystem.Colors.backgroundTertiary)
+                            .cornerRadius(DesignSystem.CornerRadius.small)
                     }
                     
                     Spacer()
                     
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                         Text("背景颜色")
                             .font(.caption)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
                         ColorPicker("", selection: $settings.backgroundColor)
                             .labelsHidden()
-                            .frame(width: 40, height: 30)
+                            .frame(width: 44, height: 32)
+                            .background(DesignSystem.Colors.backgroundTertiary)
+                            .cornerRadius(DesignSystem.CornerRadius.small)
                     }
                 }
             }
         }
     }
     
-    // MARK: - 高级功能区域
-    private var advancedFeaturesSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("高级功能")
-                .font(.subheadline)
-                .fontWeight(.medium)
-            
-            VStack(spacing: 8) {
-                Toggle("镜像显示", isOn: $settings.isMirrored)
-                Toggle("隐身模式", isOn: $settings.isInvisibleMode)
-                
-                Toggle("智能跟读", isOn: $settings.isSmartFollowEnabled)
-                    .onChange(of: settings.isSmartFollowEnabled) { _, newValue in
-                        if newValue && speechManager.isAuthorized {
-                            speechManager.startRecording { speed in
-                                playbackController.updateSpeed(speed)
-                            }
-                        } else {
-                            speechManager.stopRecording()
-                        }
-                    }
-                
-                if settings.isSmartFollowEnabled {
+    // MARK: - 高级功能卡片
+    private var advancedFeaturesCard: some View {
+        SettingsCard(title: "高级功能", icon: "gearshape.2") {
+            VStack(spacing: DesignSystem.Spacing.md) {
+                // 显示模式切换
+                VStack(spacing: DesignSystem.Spacing.sm) {
                     HStack {
-                        Image(systemName: speechManager.isRecording ? "mic.fill" : "mic.slash")
-                            .foregroundColor(speechManager.isRecording ? .green : .red)
-                        Text(speechManager.isRecording ? "正在监听..." : "未授权")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                        Image(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right")
+                            .foregroundColor(DesignSystem.Colors.primaryBlue)
+                            .font(.system(size: DesignSystem.Icons.smallIcon))
+                        Toggle("镜像显示", isOn: $settings.isMirrored)
+                            .toggleStyle(SwitchToggleStyle(tint: DesignSystem.Colors.primaryBlue))
+                    }
+                    
+                    HStack {
+                        Image(systemName: "eye.slash")
+                            .foregroundColor(DesignSystem.Colors.primaryBlue)
+                            .font(.system(size: DesignSystem.Icons.smallIcon))
+                        Toggle("隐身模式", isOn: $settings.isInvisibleMode)
+                            .toggleStyle(SwitchToggleStyle(tint: DesignSystem.Colors.primaryBlue))
                     }
                 }
                 
-                Button("全屏模式") {
-                    settings.isFullscreen.toggle()
+                Divider()
+                
+                // 智能跟读功能
+                VStack(spacing: DesignSystem.Spacing.sm) {
+                    HStack {
+                        Image(systemName: "brain.head.profile")
+                            .foregroundColor(DesignSystem.Colors.primaryGreen)
+                            .font(.system(size: DesignSystem.Icons.smallIcon))
+                        Toggle("智能跟读", isOn: $settings.isSmartFollowEnabled)
+                            .toggleStyle(SwitchToggleStyle(tint: DesignSystem.Colors.primaryGreen))
+                            .onChange(of: settings.isSmartFollowEnabled) { _, newValue in
+                                if newValue && speechManager.isAuthorized {
+                                    speechManager.startRecording { speed in
+                                        playbackController.updateSpeed(speed)
+                                    }
+                                } else {
+                                    speechManager.stopRecording()
+                                }
+                            }
+                    }
+                    
+                    if settings.isSmartFollowEnabled {
+                        HStack {
+                            Image(systemName: speechManager.isRecording ? "mic.fill" : "mic.slash")
+                                .foregroundColor(speechManager.isRecording ? DesignSystem.Colors.playGreen : DesignSystem.Colors.stopRed)
+                                .font(.system(size: DesignSystem.Icons.smallIcon))
+                            Text(speechManager.isRecording ? "正在监听..." : "未授权")
+                                .font(.caption)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                            Spacer()
+                        }
+                        .padding(.leading, DesignSystem.Spacing.lg)
+                    }
                 }
-                .frame(maxWidth: .infinity)
+                
+                Divider()
+                
+                // 全屏模式按钮
+                Button(action: {
+                    settings.isFullscreen.toggle()
+                }) {
+                    HStack {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            .font(.system(size: DesignSystem.Icons.buttonIcon, weight: .medium))
+                        Text("全屏模式")
+                            .fontWeight(.medium)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, DesignSystem.Spacing.sm)
+                }
                 .buttonStyle(.bordered)
+                .tint(DesignSystem.Colors.primaryBlue)
             }
         }
     }
