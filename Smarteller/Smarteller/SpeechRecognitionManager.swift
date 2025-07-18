@@ -23,8 +23,20 @@ class SpeechRecognitionManager: ObservableObject {
     private var lastWordCount = 0
     private var startTime: Date?
     
+    // Add synchronization queue for thread safety
+    private let speechQueue = DispatchQueue(label: "com.smarteller.speech", qos: .userInitiated)
+    
     init() {
         requestAuthorization()
+    }
+    
+    // Add proper cleanup in deinit
+    deinit {
+        stopRecording()
+        // Ensure audio engine is properly stopped
+        if audioEngine.isRunning {
+            audioEngine.stop()
+        }
     }
     
     func requestAuthorization() {
@@ -95,38 +107,60 @@ class SpeechRecognitionManager: ObservableObject {
     }
     
     func stopRecording() {
-        audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
-        
-        recognitionRequest?.endAudio()
-        recognitionRequest = nil
-        
-        recognitionTask?.cancel()
-        recognitionTask = nil
-        
-        isRecording = false
-        startTime = nil
+        speechQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Stop audio engine first
+            if self.audioEngine.isRunning {
+                self.audioEngine.stop()
+            }
+            
+            // Remove tap with error handling
+            let inputNode = self.audioEngine.inputNode
+            if inputNode.numberOfInputs > 0 {
+                inputNode.removeTap(onBus: 0)
+            }
+            
+            // Clean up recognition resources
+            self.recognitionRequest?.endAudio()
+            self.recognitionRequest = nil
+            
+            self.recognitionTask?.cancel()
+            self.recognitionTask = nil
+            
+            DispatchQueue.main.async {
+                self.isRecording = false
+            }
+            
+            self.startTime = nil
+        }
     }
     
     private func calculateSpeechRate() {
-        guard let startTime = startTime else { return }
-        
-        let currentWordCount = recognizedText.count
-        let timeElapsed = Date().timeIntervalSince(startTime)
-        
-        if timeElapsed > 1.0 && currentWordCount > lastWordCount {
-            // 计算语速（字/分钟）
-            let wordsPerMinute = Double(currentWordCount) / timeElapsed * 60.0
+        speechQueue.async { [weak self] in
+            guard let self = self,
+                  let startTime = self.startTime else { return }
             
-            // 根据语速调整播放速度
-            let normalSpeed = 150.0 // 正常语速：150字/分钟
-            let speedMultiplier = wordsPerMinute / normalSpeed
+            let currentWordCount = self.recognizedText.count
+            let timeElapsed = Date().timeIntervalSince(startTime)
             
-            // 限制速度范围在0.5到2.0之间
-            let clampedSpeed = max(0.5, min(2.0, speedMultiplier))
-            
-            onSpeechRateChanged?(clampedSpeed)
-            lastWordCount = currentWordCount
+            if timeElapsed > 1.0 && currentWordCount > self.lastWordCount {
+                // 计算语速（字/分钟）
+                let wordsPerMinute = Double(currentWordCount) / timeElapsed * 60.0
+                
+                // 根据语速调整播放速度
+                let normalSpeed = 150.0 // 正常语速：150字/分钟
+                let speedMultiplier = wordsPerMinute / normalSpeed
+                
+                // 限制速度范围在0.5到2.0之间
+                let clampedSpeed = max(0.5, min(2.0, speedMultiplier))
+                
+                DispatchQueue.main.async {
+                    self.onSpeechRateChanged?(clampedSpeed)
+                }
+                
+                self.lastWordCount = currentWordCount
+            }
         }
     }
 }
