@@ -1,0 +1,558 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		7DFF95E92E2A69C800923021 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7DFF95D02E2A69C600923021 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DFF95D72E2A69C600923021;
+			remoteInfo = Smarteller;
+		};
+		7DFF95F32E2A69C800923021 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7DFF95D02E2A69C600923021 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7DFF95D72E2A69C600923021;
+			remoteInfo = Smarteller;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		7DFF95D82E2A69C600923021 /* Smarteller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Smarteller.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFF95E82E2A69C800923021 /* SmartellerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartellerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DFF95F22E2A69C800923021 /* SmartellerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartellerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7DFF95DA2E2A69C600923021 /* Smarteller */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Smarteller;
+			sourceTree = "<group>";
+		};
+		7DFF95EB2E2A69C800923021 /* SmartellerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SmartellerTests;
+			sourceTree = "<group>";
+		};
+		7DFF95F52E2A69C800923021 /* SmartellerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SmartellerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7DFF95D52E2A69C600923021 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFF95E52E2A69C800923021 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFF95EF2E2A69C800923021 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7DFF95CF2E2A69C600923021 = {
+			isa = PBXGroup;
+			children = (
+				7DFF95DA2E2A69C600923021 /* Smarteller */,
+				7DFF95EB2E2A69C800923021 /* SmartellerTests */,
+				7DFF95F52E2A69C800923021 /* SmartellerUITests */,
+				7DFF95D92E2A69C600923021 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7DFF95D92E2A69C600923021 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7DFF95D82E2A69C600923021 /* Smarteller.app */,
+				7DFF95E82E2A69C800923021 /* SmartellerTests.xctest */,
+				7DFF95F22E2A69C800923021 /* SmartellerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7DFF95D72E2A69C600923021 /* Smarteller */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DFF95FC2E2A69C800923021 /* Build configuration list for PBXNativeTarget "Smarteller" */;
+			buildPhases = (
+				7DFF95D42E2A69C600923021 /* Sources */,
+				7DFF95D52E2A69C600923021 /* Frameworks */,
+				7DFF95D62E2A69C600923021 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7DFF95DA2E2A69C600923021 /* Smarteller */,
+			);
+			name = Smarteller;
+			packageProductDependencies = (
+			);
+			productName = Smarteller;
+			productReference = 7DFF95D82E2A69C600923021 /* Smarteller.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7DFF95E72E2A69C800923021 /* SmartellerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DFF95FF2E2A69C800923021 /* Build configuration list for PBXNativeTarget "SmartellerTests" */;
+			buildPhases = (
+				7DFF95E42E2A69C800923021 /* Sources */,
+				7DFF95E52E2A69C800923021 /* Frameworks */,
+				7DFF95E62E2A69C800923021 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7DFF95EA2E2A69C800923021 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7DFF95EB2E2A69C800923021 /* SmartellerTests */,
+			);
+			name = SmartellerTests;
+			packageProductDependencies = (
+			);
+			productName = SmartellerTests;
+			productReference = 7DFF95E82E2A69C800923021 /* SmartellerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7DFF95F12E2A69C800923021 /* SmartellerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DFF96022E2A69C800923021 /* Build configuration list for PBXNativeTarget "SmartellerUITests" */;
+			buildPhases = (
+				7DFF95EE2E2A69C800923021 /* Sources */,
+				7DFF95EF2E2A69C800923021 /* Frameworks */,
+				7DFF95F02E2A69C800923021 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7DFF95F42E2A69C800923021 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7DFF95F52E2A69C800923021 /* SmartellerUITests */,
+			);
+			name = SmartellerUITests;
+			packageProductDependencies = (
+			);
+			productName = SmartellerUITests;
+			productReference = 7DFF95F22E2A69C800923021 /* SmartellerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7DFF95D02E2A69C600923021 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					7DFF95D72E2A69C600923021 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					7DFF95E72E2A69C800923021 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 7DFF95D72E2A69C600923021;
+					};
+					7DFF95F12E2A69C800923021 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 7DFF95D72E2A69C600923021;
+					};
+				};
+			};
+			buildConfigurationList = 7DFF95D32E2A69C600923021 /* Build configuration list for PBXProject "Smarteller" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7DFF95CF2E2A69C600923021;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7DFF95D92E2A69C600923021 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7DFF95D72E2A69C600923021 /* Smarteller */,
+				7DFF95E72E2A69C800923021 /* SmartellerTests */,
+				7DFF95F12E2A69C800923021 /* SmartellerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7DFF95D62E2A69C600923021 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFF95E62E2A69C800923021 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFF95F02E2A69C800923021 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7DFF95D42E2A69C600923021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFF95E42E2A69C800923021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DFF95EE2E2A69C800923021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7DFF95EA2E2A69C800923021 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7DFF95D72E2A69C600923021 /* Smarteller */;
+			targetProxy = 7DFF95E92E2A69C800923021 /* PBXContainerItemProxy */;
+		};
+		7DFF95F42E2A69C800923021 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7DFF95D72E2A69C600923021 /* Smarteller */;
+			targetProxy = 7DFF95F32E2A69C800923021 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		7DFF95FA2E2A69C800923021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VNRH43278C;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7DFF95FB2E2A69C800923021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VNRH43278C;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		7DFF95FD2E2A69C800923021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Smarteller/Smarteller.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VNRH43278C;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.teller.Smarteller;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7DFF95FE2E2A69C800923021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Smarteller/Smarteller.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VNRH43278C;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.teller.Smarteller;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		7DFF96002E2A69C800923021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VNRH43278C;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.teller.SmartellerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Smarteller.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Smarteller";
+			};
+			name = Debug;
+		};
+		7DFF96012E2A69C800923021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VNRH43278C;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.teller.SmartellerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Smarteller.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Smarteller";
+			};
+			name = Release;
+		};
+		7DFF96032E2A69C800923021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VNRH43278C;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.teller.SmartellerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Smarteller;
+			};
+			name = Debug;
+		};
+		7DFF96042E2A69C800923021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VNRH43278C;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.smart.teller.SmartellerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Smarteller;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7DFF95D32E2A69C600923021 /* Build configuration list for PBXProject "Smarteller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFF95FA2E2A69C800923021 /* Debug */,
+				7DFF95FB2E2A69C800923021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7DFF95FC2E2A69C800923021 /* Build configuration list for PBXNativeTarget "Smarteller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFF95FD2E2A69C800923021 /* Debug */,
+				7DFF95FE2E2A69C800923021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7DFF95FF2E2A69C800923021 /* Build configuration list for PBXNativeTarget "SmartellerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFF96002E2A69C800923021 /* Debug */,
+				7DFF96012E2A69C800923021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7DFF96022E2A69C800923021 /* Build configuration list for PBXNativeTarget "SmartellerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7DFF96032E2A69C800923021 /* Debug */,
+				7DFF96042E2A69C800923021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7DFF95D02E2A69C600923021 /* Project object */;
+}
